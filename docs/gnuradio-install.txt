@@ -1,0 +1,81 @@
+
+cd /code
+
+sudo apt install python-pip
+pip install --upgrade pip
+sudo apt-get install python-setuptools python-dev build-essential
+sudo pip install PyBOMBS
+sudo chown -R mario:mario /home/mario/.cache
+
+pybombs recipes add gr-recipes git+https://github.com/gnuradio/gr-recipes.git
+pybombs recipes add gr-etcetera git+https://github.com/gnuradio/gr-etcetera.git
+
+mkdir pybombs
+pybombs prefix init -a default pybombs/default -R gnuradio-default
+
+
+cd /code/pybombs/default
+source ./setup_env.sh
+
+pybombs -p default install gr-osmosdr
+pybombs -p default install scipy
+
+gnuradio-companion
+
+
+
+# Talvez necessários:
+pybombs -p default install osmo-sdr
+pybombs -p default install rtl-sdr
+pybombs -p default install gr-ax25
+pybombs -p default install gr-kiss
+
+
+# Necessario para USRP
+pybombs recipes add ettus-pybombs git+https://github.com/EttusResearch/ettus-pybombs.git
+pybombs -p default install uhd
+
+uhd_images_downloader
+
+sudo nano /etc/security/limits.conf 
+# ADD:
+@usrp            -       rtprio          99
+
+sudo groupadd usrp
+sudo adduser mario usrp
+sudo cp /code/pybombs/default/src/uhd/host/utils/uhd-usrp.rules /etc/udev/rules.d/
+sudo udevadm control --reload-rules
+# unplug / plug device
+
+
+# Reopen terminal session
+cd /code/pybombs/default/ && source setup_env.sh && gnuradio-companion
+
+
+
+Extra info:
+
+#Opcionais
+pybombs -p default install gqrx
+
+# install (fora do environment)
+sudo pip install pyopengl
+
+
+
+
+#instala na prefix default
+pybombs install gr-radar
+
+#em outra:
+pybombs prefix init -a radar /code/pybombs/radar
+pybombs -p radar install gr-radar
+
+
+Referencias
+http://usmanwardag.github.io/gnuradio/2016/10/09/getting-started-gnuradio.html
+https://sourceforge.isae.fr/projects/ralf/wiki/UHD_and_GNURadio_installation_from_sources_with_PyBombs
+
+
+
+#opcional (para afsk_bin2hex.py funcionar)

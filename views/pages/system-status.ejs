@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <% include ../partials/header.ejs %>
+
+
+  <script src="/js/sync_FX6FR.js"></script>
+  
+</head>
+
+<body>
+  <% include ../partials/nav.ejs %>
+  <div class="col-md-12"> 
+
+
+
+
+  <div class="card-deck-wrapper">
+    <div class="card-deck">
+
+
+    <div class="card">
+      <div class="card-header"><center>Server Status</center></div>
+      <div class="card-body">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>Parameter</th>
+                <th>Value</th>
+                <th>Unit</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Total disk space</td>
+                <td><%= disk.total %></td>
+                <td>GB</td>
+              </tr>
+              <tr>
+                <td>Free disk space</td>
+                <td><%= disk.free %></td>
+                <td>GB</td>
+              </tr>
+              <tr>
+                <td>Data packets received</td>
+                <td>--</td>
+                <td>(last 24h)</td>
+              </tr>
+            </tbody>
+          </table>
+      </div>
+    </div>
+
+
+    <div class="card">
+      <div class="card-header"><center>External Syncronization</center></div>
+      <div class="card-body">
+        <button type="submit" class="btn btn-primary" onclick="sync_F4KJX();">Sync F4KJX Data</button>      
+      </div>
+    </div>
+
+
+    </div>
+  </div> 
+
+
+
+
+
+  </div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+

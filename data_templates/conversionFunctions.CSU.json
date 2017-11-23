@@ -1,0 +1,63 @@
+{
+  "zero": {
+    "version": 1,
+    "author": "Mario Baldini <mario.baldini@umontpellier.fr>",
+    "signature": "",
+    "comments": "inputLength: 0, outputLength: 1, outputType: Number",
+    "sample": "for any input, result = 0",
+    "inputVectorName": "input",
+    "inputLength": 0,
+    "functionString": "return 0"
+  },
+  "mirror": {
+    "version": 1,
+    "author": "Mario Baldini <mario.baldini@umontpellier.fr>",
+    "signature": "",
+    "comments": "For any input, returns the input argument. Usefull for debug if input is being correctly supplied.",
+    "sample": "input: 42, output: 42",
+    "inputVectorName": "input",
+    "inputLength": "Infinity",
+    "functionString": "return input"
+  },
+  "console_log": {
+    "version": 1,
+    "author": "Mario Baldini <mario.baldini@umontpellier.fr>",
+    "signature": "",
+    "comments": "Prints to the console the received data, for debuging purposes. Returns null.",
+    "sample": "input: 42, output: 42, Performs a console.log with the input",
+    "inputVectorName": "input",
+    "inputLength": "Infinity",
+    "functionString": "console.log(input); return input"
+  },
+  "bytes2hexString": {
+    "version": 1,
+    "author": "Mario Baldini <mario.baldini@umontpellier.fr>",
+    "signature": "",
+    "comments": "Converts a number(byte) vector into an formated output string",
+    "sample": "[9, 10, 11] --> 0x09,0x0A,0x0B",
+    "inputVectorName": "input",
+    "inputLength": "Infinity",
+    "functionString": "var str = ''; for (var n in input) { var hex = input[n].toString(16); str += '0x' + '00'.substring(0, 2 - hex.length) + hex + ','; }; return str;"
+  },
+  "bytesLE2int16": {
+    "version": 1,
+    "author": "Mario Baldini <mario.baldini@umontpellier.fr>",
+    "signature": "",
+    "comments": "",
+    "sample": "",
+    "inputVectorName": "input",
+    "inputLength": 2,
+    "functionString": "var value = Buffer.from( input ).readInt16LE(0); return value;"
+  },
+  "bytesLE2unixTimestamp": {
+    "version": 1,
+    "author": "Mario Baldini <mario.baldini@umontpellier.fr>",
+    "signature": "",
+    "comments": "",
+    "sample": "",
+    "inputVectorName": "input",
+    "inputLength": 4,
+    "functionString": "var ts = Buffer.from( input ).readInt32LE(0); return ts;",
+    "functionDebug": "var ts = Buffer.from( input ).readInt32LE(0); console.log('input:', input, 'ts:', ts); return ts;"
+  }
+}

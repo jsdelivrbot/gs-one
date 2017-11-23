@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <% include ../partials/header.ejs %>
+</head>
+
+<body onload="display_clock();">
+  <% include ../partials/nav.ejs %>
+  
+
+  <div class="row">
+
+    <div class="col-md-3">
+      <div class="card text-center" >
+        <div class="card-header"><strong>Groundstation Status</strong></div>
+        <div class="card-body">
+          <img src="/images/antenna-green.svg" width="25%">
+          <br><br>
+          <div class="card-block">
+            All systems are operational.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="card text-center" >
+        <div class="card-header"><strong>Satellite Status</strong></div>
+        <div class="card-body">
+          <img src="/images/satellite-green.svg" width="25%">
+          <br><br>
+          <div class="card-block">
+            Expected Telemetry Successfully Received.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="card text-center" >
+        <div class="card-header"><strong>Groundstation Clock</strong></div>
+        <div class="card-body">
+          <div class="card-block"> 
+
+             <h1 style="color:#212529"> <span id='time-date' ></span> </h1>
+             <h3 style="color:#212529"> <strong>Local time:</strong> <span id='time-local' ></span> </h3>
+             <h3 style="color:#aaaaaa"> <strong>UTC time:&nbsp;&nbsp;</strong>   <span id='time-utc' ></span> </h3>
+          </div>
+        </div>
+      </div>
+    </div>
+ 
+  </div>
+
+  <br>
+
+  <div class="row">
+
+    <div class="col-md-6">
+      <div class="card text-center" >
+        <div class="card-header"><strong>Latest ROBUSTA 1B Dataframe</strong></div>
+        <div class="card-body">
+          <div class="card-block"> 
+            
+
+          <table class="table table-hover">
+            <tbody>
+              <tr>
+                <td>Reception Date</td>
+                <td> <%= frameLatest.receptionDate %> </td>
+              </tr>
+              <tr>
+                <td>Satellite Clock</td>
+                <td><span id='sat-clock' ></span></td>
+              </tr>
+              <tr>
+                <td>Payload Temperature (C):</td>
+                <td><%= frameLatest.fields['PL_TEMP_1'].value %></td>
+              </tr>
+              <tr>
+                <td>Full Decoded Frame:</td>
+                <td><button class="btn btn-primary" data-toggle="modal" data-target=".modal-frame-decoded">View</button></td>
+              </tr>
+              <tr>
+                <td>Full Raw Frame:</td>
+                <td><button class="btn btn-primary" data-toggle="modal" data-target=".modal-frame-raw">View</button></td>
+              </tr>
+            </tbody>
+          </table>
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="col-md-6">
+      <div class="card text-center" >
+        <div class="card-header"><strong>CELESTRACK TLE Monitoring</strong></div>
+        <div class="card-body">
+          <div class="card-block"> 
+            
+
+          <table class="table table-hover">
+            <tbody>
+              <tr>
+                <td>Last Celestrak TLE Update</td>
+                <td> <div id='tle-celestrak-update' ></div> </td>
+              </tr>
+              <tr>
+                <td>Last CSU TLE Update</td>
+                <td> -- </td>
+              </tr>
+              <tr>
+                <td>Celestrak Website</td>
+                <td> <a href="https://celestrak.com/" target="_blank">Open site</a>  </td>
+              </tr>
+              <tr>
+                <td>Celestrak CubeSats Current TLEs</td>
+                <td> <a href="https://celestrak.com/NORAD/elements/cubesat.txt" target="_blank">Open site</a>  </td>
+              </tr>
+              
+            </tbody>
+          </table>
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  
+<!-- Modals -->
+  <div class="modal fade modal-frame-decoded" tabindex="-1" role="dialog" >
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+      
+        <div class="modal-header">
+          <h5 class="modal-title">Frame Decoded Content</h5>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button> -->
+        </div>
+
+        <pre id="id-frame-decoded"><code class="language-json" ><%= JSON.stringify( frameLatest, null, 2 ) %></code></pre>
+
+        <div class="modal-footer">
+          <!-- <button type="button" class="btn btn-primary" onclick="copyToClipboard('#id-frame-decoded');">Copy to Clipboard</button> -->
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+<div class="modal fade modal-frame-raw" tabindex="-1" role="dialog" >
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+      
+        <div class="modal-header">
+          <h5 class="modal-title">Received Frame Raw Content</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+
+        <textarea class="form-control" id="id-frame-raw" rows="15"></textarea>
+      
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" onclick="copyToClipboard('#id-frame-raw');">Copy to Clipboard</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+
+</body>
+
+
+<!-- frame modal content -->
+<link href="stylesheets/prism.css" rel="stylesheet" />
+<script src="js/prism.js"></script>
+
+<script type="text/javascript">
+  var frame_raw_str = '<%= frameLatest.raw %>';
+  document.getElementById('id-frame-raw').innerHTML = frame_raw_str;
+
+
+  // var code = "var data = 1;";
+  // var html = Prism.highlight(code, Prism.languages.javascript);
+
+  // var frame_decoded_str = '<%= JSON.stringify( frameLatest ) %>';
+  // document.getElementById('id-frame-decoded').innerHTML = html;
+</script>
+
+<style type="text/css">
+  #id-frame-raw {
+    font-family: monospace;
+    font-size: 2em;
+}
+</style>
+
+
+
+
+<!-- copy to clipboard  -->
+<script type="text/javascript">
+  function copyToClipboard(id) {
+
+    // console.log(document.querySelector(id));
+    document.querySelector(id).select();
+    document.execCommand('copy');
+  }
+</script>
+
+
+
+<!-- clocks -->
+<script src="js/moment.js"></script>
+<script type="text/javascript">
+  
+  function display_clock_refresh(){
+    setTimeout('display_clock()',1000);
+  }
+
+  function display_clock() {
+    var date  = moment().format("MMMM Do YYYY");
+    var local = moment().format('LTS');
+    var utc   = moment().utc().format('LTS');
+    document.getElementById('time-date').innerHTML = date;
+    document.getElementById('time-local').innerHTML = local;
+    document.getElementById('time-utc').innerHTML = utc;
+    display_clock_refresh();
+
+
+    var satClock = moment.unix( <%= frameLatest.fields['TIMESTAMP'].value %> ).format("YYYY-MM-DD hh:mm:ss");
+    document.getElementById('sat-clock').innerHTML = satClock;
+
+  }
+
+</script>
+
+</html>
+
+
+
+<!-- CELESTRAK integration -->
+<script type="text/javascript">
+  
+  $(document).ready(function(){
+    getCelestrakLastUpdate();
+  });
+
+
+  function getCelestrakLastUpdate() {
+    $.ajax({
+     type: 'GET',
+     url:'/api/getSite/http%3A%2F%2Fcelestrak.com%2FNORAD%2Felements%2F', 
+     success: function(data){
+       var myRegexp = /Data Updated: (.*)</;
+       var lastDate = myRegexp.exec(data);
+       document.getElementById('tle-celestrak-update').textContent = lastDate[1];
+     },
+     error: function(jqXHR, textStatus, errorThrown) {
+       console.log('getCelestrakLastUpdate() ERROR:', errorThrown);
+     }
+    });
+  }
+
+
+</script>
+
+
+
+
+
+
+
+
